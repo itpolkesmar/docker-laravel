@@ -1,4 +1,4 @@
-# Simaju Project
+# Laravel in Docker Development
 
 This is the initial setup for a Laravel project using Docker.
 
