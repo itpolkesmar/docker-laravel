@@ -1,5 +1,5 @@
 # Dockerfile
-FROM php:8.2-fpm
+FROM php:8.3-fpm
 
 # move to tmp folder
 WORKDIR /tmp
@@ -26,14 +26,20 @@ RUN apt-get update && apt-get install -y \
 RUN docker-php-ext-configure gd --with-jpeg --with-freetype 
 RUN docker-php-ext-install -j$(nproc) gd exif
 
-# install yaz
-RUN apt update && \
-    apt install -y --no-install-recommends git subversion autoconf build-essential && \
-    apt install -y --no-install-recommends libyaz-dev && \
-    rm -rf /var/lib/apt/lists/*
-RUN pecl install --force yaz && \
-    pecl run-tests yaz
-RUN docker-php-ext-enable yaz
+# install intl
+RUN apt-get update && apt-get install -y \
+    libicu-dev \
+    libonig-dev \
+    libzip-dev \
+    zip \
+    unzip \
+    git \
+    && docker-php-ext-configure intl \
+    && docker-php-ext-install intl \
+    && docker-php-ext-install mbstring \
+    && docker-php-ext-install zip
+RUN docker-php-ext-enable intl mbstring zip
+
 
 # install mysqli
 RUN docker-php-ext-install mysqli
