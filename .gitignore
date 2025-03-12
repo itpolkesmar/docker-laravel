@@ -1,3 +1,4 @@
-data/init.sql
+data/*.sql
 src/*
 !src/.gitkeep
+meili_data/
